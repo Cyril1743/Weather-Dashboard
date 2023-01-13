@@ -19,53 +19,30 @@
         <div class="row">
             <div class="col-3">
                 <h2>Search for a City</h2>
-                <form>
-                    <input type="text" id="searchInput" name="Search for a City">
-                    <button type="button">Search</button>
+                <form id="searchForm">
+                    <label for="searchCity" style="display: block;">City</label>
+                    <input type="text" id="searchCity" name="searchCity" required>
+                    <label for="searchState" style="display: block;">State</label>
+                    <input type="text" id="searchState" name="searchState" required maxlength="2">
+                    <lable for="searchZip" style="display: block;">Zip Code</lable>
+                    <input type="text" id="searchZip" name="searchZip" required maxlength="5">
+                    <button type="submit" id="searchButton">Search</button>
                 </form>
                 <ul id="recentCity"></ul>
             </div>
             <div class="col-9">
                 <div class="row">
-                    <h2 id="cityName">City Name<span id="icon"></span><span id="date"></span></h2>
-                    <div>Temp: <span id="temp"></span></div>
-                    <div>Wind: <span id="wind"></span></div>
-                    <div>Humidity: <span id="humidity"></span></div>
+                    <h2 id="cityName"></h2>
                     <h3>5 Day Forecast:</h3>
                     <div class="card col mx-2" style="width: 18em;">
-                        <h4 class="card-title">Date</h4>
-                        <div class="card-text">Icon</div>
-                        <div class="card-text">Temp: <span id=""></span></div>
-                        <div class="card-text">Wind: <span id=""></span></div>
-                        <div class="card-text">Humidity: <span id=""></span> </div>
+                    </div>
+                    <div class="card col mx-2" style="width: 18em;">
+                    </div>
+                    <div class="card col mx-2" style="width: 18em;">
+                    </div>
+                    <div class="card col mx-2" style="width: 18em;">
                     </div>
                     <div class="card col" style="width: 18em;">
-                        <h4 class="card-title">Date</h4>
-                        <div class="card-text">Icon</div>
-                        <div class="card-text">Temp: <span id=""></span></div>
-                        <div class="card-text">Wind: <span id=""></span></div>
-                        <div class="card-text">Humidity: <span id=""></span> </div>
-                    </div>
-                    <div class="card col" style="width: 18em;">
-                        <h4 class="card-title">Date</h4>
-                        <div class="card-text">Icon</div>
-                        <div class="card-text">Temp: <span id=""></span></div>
-                        <div class="card-text">Wind: <span id=""></span></div>
-                        <div class="card-text">Humidity: <span id=""></span> </div>
-                    </div>
-                    <div class="card col" style="width: 18em;">
-                        <h4 class="card-title">Date</h4>
-                        <div class="card-text">Icon</div>
-                        <div class="card-text">Temp: <span id=""></span></div>
-                        <div class="card-text">Wind: <span id=""></span></div>
-                        <div class="card-text">Humidity: <span id=""></span> </div>
-                    </div>
-                    <div class="card col" style="width: 18em;">
-                        <h4 class="card-title">Date</h4>
-                        <div class="card-text">Icon</div>
-                        <div class="card-text">Temp: <span id=""></span></div>
-                        <div class="card-text">Wind: <span id=""></span></div>
-                        <div class="card-text">Humidity: <span id=""></span> </div>
                     </div>
                 </div>
             </div>
@@ -74,8 +51,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="./assets/script.js"></script>
 </body>
-
-
 
 </html>
