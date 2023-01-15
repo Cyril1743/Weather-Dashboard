@@ -7,29 +7,45 @@ var searchZip = $("#searchZip")
 var cityName = $("#cityName")
 var days = $(".card")
 var currentDay = dayjs("MMM DD, YYYY")
-var lat = 0
-var long = 0
+var latAndLon = []
 var cityData = ""
+var weatherData = {}
 
 searchButton.on("click", function (event) {
     event.preventDefault()
+    getLocation()
+    populateData()
+
+})
+
+function getLocation() {
     cityData = searchCity.val() + "," + searchState.val() + "," + searchZip.val()
     var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityData + "&appid=82b6f72e416a643fc9c8ad973faf1aa5"
-    console.log(cityData)
     //parsing through the data
     fetch(geoURL)
         .then(function (reponse) {
-            if (reponse.status === 400) {
-                return
-            } else {
-                return reponse.json()
-            }
+            return reponse.json()
         })
         .then(function (data) {
-            console.log(data)
+            latAndLon.push(data[0].lat)
+            latAndLon.push(data[0].lon)
+            getWeather()
         })
-})
+}
+function getWeather() {
+    fetch('https://api.openweathermap.org/data/3.0/onecall?lat=' + latAndLon[0] + '&lon=' + latAndLon[1] + '&appid=82b6f72e416a643fc9c8ad973faf1aa5')
+        .then(function (reponse) {
+            return reponse.json()
+        })
+        .then(function (data) {
+            weatherData = data
+            console.log(weatherData)
+        })
 
+}
+function populateData() {
+    
+}
 
 //setting the elements in the html to data varibles
 //pushing the searches to the localStorages
