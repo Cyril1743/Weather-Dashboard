@@ -1,0 +1,25 @@
+button {
+    display: inline;
+    background-image: linear-gradient(to right, blue, purple);
+    color: white;
+}
+body {
+    background-image: linear-gradient(yellow, orange);
+    background-repeat: no-repeat;
+    height: 100%;
+    background-attachment: fixed;
+}
+#cityName {
+    border: 5px solid grey;
+    border-radius: 5px;
+}
+.card {
+    background-image: linear-gradient(to right, blue, purple);
+    color: white;
+}
+h1{
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(to right, blue, purple);
+    color: white;
+}
