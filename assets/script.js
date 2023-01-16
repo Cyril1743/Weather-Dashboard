@@ -11,6 +11,7 @@ var latAndLon = []
 var cityData = ""
 var weatherData = {}
 var currentWeather = $("#cityName")
+var recentSearches = $("#recentSearches")
 searchButton.on("click", function (event) {
     event.preventDefault()
     getLocation()
@@ -25,24 +26,39 @@ function getLocation() {
             return reponse.json()
         })
         .then(function (data) {
-            latAndLon.push(data[0].lat)
-            latAndLon.push(data[0].lon)
+            latAndLon.splice(0, 0, data[0].lat)
+            latAndLon.splice(1, 0, data[0].lon)
             getWeather()
         })
 }
 function getWeather() {
     fetch('https://api.openweathermap.org/data/3.0/onecall?lat=' + latAndLon[0] + '&lon=' + latAndLon[1] + '&units=imperial&appid=82b6f72e416a643fc9c8ad973faf1aa5')
         .then(function (reponse) {
-            return reponse.json()
+                return reponse.json()
         })
         .then(function (data) {
             weatherData = data
             console.log(weatherData)
             populateData()
+            var cityId = cityData.replaceAll(",", "")
+            //pushing the searches to the localStorages
+            localStorage.setItem(cityId, JSON.stringify(weatherData))
+            recentSearches.after("<button id='" + cityId + "'>" + cityData + "</button>")
+            var cityButton = $("#" + cityId)
+            cityButton.on("click", function (event) {
+                cityId = event.target.id
+                cityData = event.target.textContent
+                weatherData = JSON.parse(localStorage.getItem(cityId))
+                populateData()
+            })
         })
-
 }
+//setting the elements in the html to data varibles
 function populateData() {
+    $.each(days, function () {
+        $(this).empty()
+    })
+    currentWeather.empty()
     currentWeather.append("<h2>" + cityData + "</h2")
     currentWeather.append("<div>" + currentDay + "</div>")
     var weatherId = weatherData.current.weather[0].id
@@ -62,9 +78,8 @@ function populateData() {
     currentWeather.append("<div> Tempature: " + weatherData.current.temp + "F</div>")
     currentWeather.append("<div> Wind: " + weatherData.current.wind_speed + "MPH</div>")
     currentWeather.append("<div> Humidity: " + weatherData.current.humidity + "% </div>")
-    $.each(days, function (i, v) {
+    $.each(days, function (i) {
         $(this).append("<h4 class='card-title'>" + dayjs().add(i + 1, 'day').format("MMM DD, YYYY") + "</h4>")
-        $(this).append("<div class='card-body'></div>")
         var icon = weatherData.daily[i].weather[0].id
         if (icon < 300 && icon >= 200) {
             $(this).append("<div class='card-text'> &#127785 </div>")
@@ -79,11 +94,21 @@ function populateData() {
         } else {
             $(this).append("<div class='card-text'> &#127780 </div>")
         }
-        $(this).append("<div class='card-text'> High: " + weatherData.daily[i].temp.max + "F</div>")
-        $(this).append("<div class='card-text'> Low:" + weatherData.daily[i].temp.min + "F</div>")
+        $(this).append("<div class='card-text'> High: " + weatherData.daily[i].temp.max + " F</div>")
+        $(this).append("<div class='card-text'> Low: " + weatherData.daily[i].temp.min + " F</div>")
+        $(this).append("<div class='card-text'> Wind: " + weatherData.daily[i].wind_speed + " MPH</div>")
+        $(this).append("<div class='card-text'> Humidity: " + weatherData.daily[i].humidity + " %</div>")
+
     })
 }
-
-//setting the elements in the html to data varibles
-//pushing the searches to the localStorages
 //retrieving the searches to populate
+for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i)
+    recentSearches.after("<button id='" + key + "'>" + key + "</button>")
+    var cityButton = $("#" + key)
+    cityButton.on("click", function (event) {
+        cityId = event.target.id
+        cityData = event.target.textContent
+        weatherData = JSON.parse(localStorage.getItem(cityId))
+        populateData()
+    })}
