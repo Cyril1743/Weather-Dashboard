@@ -7,4 +7,6 @@ I wanted to try to build a website that used a server-side API
 # What problem does it solve
 I now am better able to plan trips because I know the weather and future weather conditions
 # Screenshot
-![Screenshot](assets/screenshot.jpg)
+![Screenshot](assets/screenshot.png)
+# Website
+https://cyril1743.github.io/weather-dashboard/
