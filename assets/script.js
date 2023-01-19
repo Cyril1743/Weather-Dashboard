@@ -12,6 +12,7 @@ var cityData = ""
 var weatherData = {}
 var currentWeather = $("#cityName")
 var recentSearches = $("#recentSearches")
+var storedSearches = {}
 searchButton.on("click", function (event) {
     event.preventDefault()
     getLocation()
@@ -19,7 +20,7 @@ searchButton.on("click", function (event) {
 
 function getLocation() {
     cityData = searchCity.val() + "," + searchState.val() + "," + searchZip.val()
-    var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityData + "&appid=82b6f72e416a643fc9c8ad973faf1aa5"
+    var geoURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityData + "&appid=82b6f72e416a643fc9c8ad973faf1aa5"
     //parsing through the data
     fetch(geoURL)
         .then(function (reponse) {
@@ -34,7 +35,7 @@ function getLocation() {
 function getWeather() {
     fetch('https://api.openweathermap.org/data/3.0/onecall?lat=' + latAndLon[0] + '&lon=' + latAndLon[1] + '&units=imperial&appid=82b6f72e416a643fc9c8ad973faf1aa5')
         .then(function (reponse) {
-                return reponse.json()
+            return reponse.json()
         })
         .then(function (data) {
             weatherData = data
@@ -42,14 +43,17 @@ function getWeather() {
             populateData()
             var cityId = cityData.replaceAll(",", "")
             //pushing the searches to the localStorages
-            localStorage.setItem(cityId, JSON.stringify(weatherData))
+            if (!Object.keys(storedSearches).includes(cityId)) {
+                storedSearches.cityId = cityData
+                console.log(storedSearches)
+            }
+            localStorage.setItem("storedSearches", JSON.stringify(storedSearches))
             recentSearches.after("<button id='" + cityId + "'>" + cityData + "</button>")
             var cityButton = $("#" + cityId)
             cityButton.on("click", function (event) {
                 cityId = event.target.id
                 cityData = event.target.textContent
-                weatherData = JSON.parse(localStorage.getItem(cityId))
-                populateData()
+                getLocation()
             })
         })
 }
@@ -102,13 +106,20 @@ function populateData() {
     })
 }
 //retrieving the searches to populate
-for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i)
-    recentSearches.after("<button id='" + key + "'>" + key + "</button>")
-    var cityButton = $("#" + key)
+if (JSON.parse(localStorage.getItem("storedSearches"))) {
+    storedSearches = JSON.parse(localStorage.getItem("storedSearches"))
+    console.log(storedSearches)
+} else {
+    storedSearches = {}
+    console.log(storedSearches)
+}
+for (var i = 0; i < storedSearches.length ; i++) {
+    var cityId = Object.keys(storedSearches)[i]
+    var cityData = Object.values(storedSearches)[i]
+    recentSearches.after("<button id='" + cityId + "'>" + cityData + "</button>")
+    var cityButton = $("#" + cityId)
     cityButton.on("click", function (event) {
-        cityId = event.target.id
         cityData = event.target.textContent
-        weatherData = JSON.parse(localStorage.getItem(cityId))
-        populateData()
-    })}
+        getLocation()
+    })
+}
