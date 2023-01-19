@@ -19,7 +19,7 @@ searchButton.on("click", function (event) {
 
 function getLocation() {
     cityData = searchCity.val() + "," + searchState.val() + "," + searchZip.val()
-    var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityData + "&appid=82b6f72e416a643fc9c8ad973faf1aa5"
+    var geoURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityData + "&appid=82b6f72e416a643fc9c8ad973faf1aa5"
     //parsing through the data
     fetch(geoURL)
         .then(function (reponse) {
@@ -112,3 +112,6 @@ for (var i = 0; i < localStorage.length; i++) {
         weatherData = JSON.parse(localStorage.getItem(cityId))
         populateData()
     })}
+// $.on("click", function (event) {
+//     console.log(event.target)
+// })
